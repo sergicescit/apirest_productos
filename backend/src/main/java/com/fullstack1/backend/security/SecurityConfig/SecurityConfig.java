@@ -24,6 +24,8 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.PUT, "/usuarios/**").permitAll() 
                 .requestMatchers("/usuarios/**").permitAll()  //damos acceso a las rutas
+                .requestMatchers(HttpMethod.PUT, "/productos/**").permitAll() 
+                .requestMatchers("/productos/**").permitAll()  //damos acceso a las rutas
                 .anyRequest().authenticated()   //Protege las demás rutas
             );
 

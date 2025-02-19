@@ -1,7 +1,8 @@
 package com.fullstack1.backend.models;
 
-import java.text.DecimalFormat;
+import java.math.BigDecimal;
 
+import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,12 +22,12 @@ public class Producto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_producto")
+    @Column(name = "id_producto", nullable = false)
     private Long idProducto;
 
-    @Column(nullable = false)
+    @NonNull
     private String nombre;
     
-    @Column(nullable = false)
-    private DecimalFormat precio;
+    @NonNull
+    private BigDecimal precio;
 }

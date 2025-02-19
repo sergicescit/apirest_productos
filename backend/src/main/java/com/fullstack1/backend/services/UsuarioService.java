@@ -61,40 +61,41 @@ public class UsuarioService {
         usuarioRepo.deleteById(id);
     }
 
-    public List<Usuario> listarUsuarios(){
+    public List<Usuario> listarUsuarios() {
         return usuarioRepo.findAll();
     }
 
-    public Optional<Usuario> listarUsuarioPorId(Long id){
+    public Optional<Usuario> listarUsuarioPorId(Long id) {
 
         Optional<Usuario> usuarioOpt = usuarioRepo.findById(id);
 
         if (!usuarioOpt.isPresent()) {
             throw new NoSuchElementException("Usuario con id " + id + " no encontrado.");
         }
-        
+
         usuarioOpt.ifPresent(usuario -> {
             try {
-                String passwordDesencriptado = UtilEncriptacion.desencriptar(usuario.getPassword());    
+                String passwordDesencriptado = UtilEncriptacion.desencriptar(usuario.getPassword());
                 usuario.setPassword(passwordDesencriptado);
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new RuntimeException("Error al obtener el usuario: " + e.getMessage());
             }
         });
-        
+
         return usuarioOpt;
     }
-    public Optional<Usuario> listarUsuarioPorEmail(String email){
+
+    public Optional<Usuario> listarUsuarioPorEmail(String email) {
         Optional<Usuario> usuarioOpt = usuarioRepo.findByEmail(email);
         if (!usuarioOpt.isPresent()) {
             throw new NoSuchElementException("No se encontró ningún usuario con este email: " + email);
-        } else {    
+        } else {
             return usuarioOpt;
         }
     }
 
-    public List<Usuario> listarUsuarioPorNombre(String nombre){
+    public List<Usuario> listarUsuarioPorNombre(String nombre) {
         List<Usuario> usuarios = usuarioRepo.findByNombre(nombre);
         if (usuarios.isEmpty()) {
             throw new NoSuchElementException("No se encontró ningún usuario con este nombre: " + nombre);
