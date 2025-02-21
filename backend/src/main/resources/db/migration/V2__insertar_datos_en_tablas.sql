@@ -2,8 +2,15 @@ INSERT INTO user (nombre, email, password)
 VALUES 
 ('maria', 'maria@mail.com', 'zIPSCkL6mo+xA/GNmSt8Rw=='),
 ('miguel', 'miguel@mail.com', 'zIPSCkL6mo+xA/GNmSt8Rw=='),
-('andres', 'andres@mail.com', 'zIPSCkL6mo+xA/GNmSt8Rw=='),
+('Matias', 'matias@mail.com', 'zIPSCkL6mo+xA/GNmSt8Rw=='),
 ('mireia', 'mireia@mail.com', 'zIPSCkL6mo+xA/GNmSt8Rw==');
+
+INSERT INTO cliente (nombre, email, password) 
+VALUES 
+('Luis', 'luis@mail.com', 'zIPSCkL6mo+xA/GNmSt8Rw=='),
+('Laura', 'laura@mail.com', 'zIPSCkL6mo+xA/GNmSt8Rw=='),
+('Lorenzo', 'lorenzo@mail.com', 'zIPSCkL6mo+xA/GNmSt8Rw=='),
+('Lorena', 'lorena@mail.com', 'zIPSCkL6mo+xA/GNmSt8Rw==');
 
 INSERT INTO producto (nombre, precio)
 VALUES ('Camiseta Blanca', 20.50),
@@ -11,8 +18,12 @@ VALUES ('Camiseta Blanca', 20.50),
 ('Camiseta Negra', 21.25),
 ('Camiseta Amarilla', 28.00);
 
-INSERT INTO pedido (cliente)
-VALUES (1), (2), (3), (4);
+INSERT INTO pedido (cliente_id, fecha) 
+VALUES 
+    (1, '2025-02-21 12:00:00'),
+    (2, '2025-02-21 12:30:00'),
+    (3, '2025-02-21 13:00:00'),
+    (4, '2025-02-21 13:30:00');
 
 INSERT INTO pedido_producto (pedido_id, producto_id, cantidad)
 VALUES (1, 1, 4),

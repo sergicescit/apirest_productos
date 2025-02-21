@@ -20,25 +20,32 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable())   //Desabilita csfr dando acceso a Postman y Front
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers(HttpMethod.PUT, "/usuarios/**").permitAll() 
-                .requestMatchers("/usuarios/**").permitAll()  //damos acceso a las rutas
-                .requestMatchers(HttpMethod.PUT, "/productos/**").permitAll() 
-                .requestMatchers("/productos/**").permitAll()  //damos acceso a las rutas
-                .anyRequest().authenticated()   //Protege las demás rutas
-            );
+                .csrf(csrf -> csrf.disable()) // Desabilita csfr dando acceso a Postman y Front
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.PUT, "/usuarios/**").permitAll()
+                        .requestMatchers("/usuarios/**").permitAll() // damos acceso a las rutas
+                        .requestMatchers(HttpMethod.PUT, "/productos/**").permitAll()
+                        .requestMatchers("/productos/**").permitAll() // damos acceso a las rutas
+                        .requestMatchers(HttpMethod.PUT, "/pedidos/**").permitAll()
+                        .requestMatchers("/pedidos/**").permitAll() // damos acceso a las rutas
+                        .requestMatchers(HttpMethod.PUT, "/clientes/**").permitAll()
+                        .requestMatchers("/clientes/**").permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/pedido_productos/**").permitAll()
+                        .requestMatchers("/pedido_productos/**").permitAll() 
+                        .anyRequest().authenticated() // Protege las demás rutas
 
-            return http.build();
+                );
+
+        return http.build();
     }
 
     @Bean
     public UserDetailsService UserDetailService() {
         UserDetails user = User.builder()
-            .username("usuario")
-            .password(passwordEncoder().encode("1234"))
-            .roles("USER")
-            .build();
+                .username("usuario")
+                .password(passwordEncoder().encode("1234"))
+                .roles("USER")
+                .build();
         return new InMemoryUserDetailsManager(user);
     }
 
