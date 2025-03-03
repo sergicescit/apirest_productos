@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fullstack1.backend.models.Producto;
+import com.fullstack1.backend.dto.ProductoRequestDTO;
+import com.fullstack1.backend.dto.ProductoResponseDTO;
 import com.fullstack1.backend.services.ProductoService;
 
 import lombok.RequiredArgsConstructor;
@@ -29,8 +30,8 @@ public class ProductoController {
     private final ProductoService productoService;
 
     @PostMapping("/crear")
-    public ResponseEntity<?> crearProducto(@RequestBody Producto producto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(productoService.crearProducto(producto));
+    public ResponseEntity<?> crearProducto(@RequestBody ProductoRequestDTO productoDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(productoService.crearProducto(productoDTO));
     }
 
     @DeleteMapping("/eliminar/{id}")
@@ -40,12 +41,12 @@ public class ProductoController {
     }
 
     @PutMapping("/actualizar/{id}")
-    public ResponseEntity<?> actualizarProducto(@PathVariable Long idProducto, @RequestBody Producto producto) {
-        return ResponseEntity.ok(productoService.actualizarProducto(idProducto, producto));
+    public ResponseEntity<?> actualizarProducto(@PathVariable Long idProducto, @RequestBody ProductoRequestDTO productoDTO) {
+        return ResponseEntity.ok(productoService.actualizarProducto(idProducto, productoDTO));
     }
 
     @GetMapping("/listar")
-    public List<Producto> listarProducto() {
+    public List<ProductoResponseDTO> listarProducto() {
         return productoService.listarProducto();
     }
 
@@ -56,7 +57,7 @@ public class ProductoController {
 
     @GetMapping("/nombre/{nombre}")
     public ResponseEntity<?> listarProductoPorNombre(@PathVariable String nombre) {
-        List<Producto> productos = productoService.listarProductoPorNombre(nombre);
+        List<ProductoResponseDTO> productos = productoService.listarProductoPorNombre(nombre);
 
         if (productos.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -71,7 +72,7 @@ public class ProductoController {
             @RequestParam BigDecimal precioMin,
             @RequestParam BigDecimal precioMax) {
 
-        List<Producto> productos = productoService.listarProductosPorPrecio(precioMin, precioMax);
+        List<ProductoResponseDTO> productos = productoService.listarProductosPorPrecio(precioMin, precioMax);
 
         if (productos.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)

@@ -2,7 +2,8 @@ package com.fullstack1.backend.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fullstack1.backend.models.Usuario;
+import com.fullstack1.backend.dto.UsuarioRequestDTO;
+import com.fullstack1.backend.dto.UsuarioResponseDTO;
 import com.fullstack1.backend.services.UsuarioService;
 
 import lombok.RequiredArgsConstructor;
@@ -32,29 +33,29 @@ public class UsuarioController {
     private final UsuarioService usuarioService;
 
     @PostMapping("/crear")
-    public ResponseEntity<?> crearUsuario(@RequestBody Usuario usuario) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.crearUsuario(usuario));
+    public ResponseEntity<?> crearUsuario(@RequestBody UsuarioRequestDTO usuarioDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.crearUsuario(usuarioDTO));
     }
 
-    @PutMapping("/actualizar/{id}")
-    public ResponseEntity<?> actualizarUsuario(@PathVariable Long id, @RequestBody Usuario usuario) {
-        return ResponseEntity.ok(usuarioService.actualizarUsuario(id, usuario));
+    @PutMapping("/actualizar/{idUsuario}")
+    public ResponseEntity<?> actualizarUsuario(@PathVariable Long idUsuario, @RequestBody UsuarioRequestDTO usuarioDTO) {
+        return ResponseEntity.ok(usuarioService.actualizarUsuario(idUsuario, usuarioDTO));
     }
 
-    @DeleteMapping("/eliminar/{id}")
+    @DeleteMapping("/eliminar/{idUsuario}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void eliminarUsuario(@PathVariable Long id) {
-        usuarioService.eliminarUsuario(id);
+    public void eliminarUsuario(@PathVariable Long idUsuario) {
+        usuarioService.eliminarUsuario(idUsuario);
     }
 
     @GetMapping("/listar")
-    public List<Usuario> listarUsuarios() {
+    public List<UsuarioResponseDTO> listarUsuarios() {
         return usuarioService.listarUsuarios();
     }
 
-    @GetMapping("/id/{id}")
-    public ResponseEntity<?> listarUsuarioPorId(@PathVariable Long id) {
-            Optional<Usuario> usuarioOpt = usuarioService.listarUsuarioPorId(id);
+    @GetMapping("/id/{idUsuario}")
+    public ResponseEntity<?> listarUsuarioPorId(@PathVariable Long idUsuario) {
+            Optional<UsuarioResponseDTO> usuarioOpt = usuarioService.listarUsuarioPorId(idUsuario);
             if (usuarioOpt.isPresent()) {
                 return ResponseEntity.ok(usuarioOpt.get());
             } else {
@@ -64,7 +65,7 @@ public class UsuarioController {
 
     @GetMapping("/email/{email}")
     public ResponseEntity<?> listarUsuarioPorEmail(@PathVariable String email) {
-        Optional<Usuario> usuarioOpt = usuarioService.listarUsuarioPorEmail(email);
+        Optional<UsuarioResponseDTO> usuarioOpt = usuarioService.listarUsuarioPorEmail(email);
         if (usuarioOpt.isPresent()) {
             return ResponseEntity.ok(usuarioOpt.get());
         } else {
@@ -74,7 +75,7 @@ public class UsuarioController {
 
     @GetMapping("/nombre/{nombre}")
     public ResponseEntity<?> listarUsuarioPorNombre(@PathVariable String nombre) {
-        List<Usuario> usuarios = usuarioService.listarUsuarioPorNombre(nombre);
+        List<UsuarioResponseDTO> usuarios = usuarioService.listarUsuarioPorNombre(nombre);
         if (usuarios.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se ha encontrado usuarios con este nombre");
         } else {

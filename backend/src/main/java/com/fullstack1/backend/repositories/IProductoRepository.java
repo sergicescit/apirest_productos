@@ -13,7 +13,10 @@ import com.fullstack1.backend.models.Producto;
 
 @Repository
 public interface IProductoRepository extends JpaRepository<Producto, Long> {
+   
     boolean existsByIdProducto(Long idProducto);
+
+    boolean existsByNombre(String nombre);
 
     Optional<Producto> findByIdProducto(Long idProducto);
 
@@ -21,7 +24,7 @@ public interface IProductoRepository extends JpaRepository<Producto, Long> {
 
     // Poner atención en que el nombre de la tabla coincida con el de la ENTIDAD, no
     // con el de la tabla en la bbdd
-    @Query("SELECT p FROM Producto p WHERE p.precio BETWEEN :precioMin AND :precioMax")
+    @Query("SELECT pr FROM Producto pr WHERE pr.precio BETWEEN :precioMin AND :precioMax")
     List<Producto> findByPrecioEnRango(@Param("precioMin") BigDecimal precioMin,
             @Param("precioMax") BigDecimal precioMax);
 }

@@ -2,7 +2,8 @@ package com.fullstack1.backend.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fullstack1.backend.models.Cliente;
+import com.fullstack1.backend.dto.ClienteRequestDTO;
+import com.fullstack1.backend.dto.ClienteResponseDTO;
 import com.fullstack1.backend.services.ClienteService;
 
 import lombok.RequiredArgsConstructor;
@@ -32,50 +33,53 @@ public class ClienteController {
     private final ClienteService clienteService;
 
     @PostMapping("/crear")
-    public ResponseEntity<?> crearCliente(@RequestBody Cliente cliente) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(clienteService.crearCliente(cliente));
+    public ResponseEntity<?> crearCliente(@RequestBody ClienteRequestDTO clienteDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(clienteService.crearCliente(clienteDTO));
     }
 
     @PutMapping("/actualizar/{id}")
-    public ResponseEntity<?> actualizarCliente(@PathVariable Long id, @RequestBody Cliente cliente) {
-        return ResponseEntity.ok(clienteService.actualizarCliente(id, cliente));
+    public ResponseEntity<?> actualizarCliente(@PathVariable Long idCliente, @RequestBody ClienteRequestDTO clienteDTO) {
+        return ResponseEntity.ok(clienteService.actualizarCliente(idCliente, clienteDTO));
     }
 
     @DeleteMapping("/eliminar/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void eliminarCliente(@PathVariable Long id) {
-        clienteService.eliminarCliente(id);
+    public void eliminarCliente(@PathVariable Long idCliente) {
+        clienteService.eliminarCliente(idCliente);
     }
 
     @GetMapping("/listar")
-    public List<Cliente> listarClientes() {
+    public List<ClienteResponseDTO> listarClientes() {
         return clienteService.listarClientes();
     }
 
-    @GetMapping("/id/{id}")
-    public ResponseEntity<?> listarClientePorId(@PathVariable Long id) {
-            Optional<Cliente> clienteOpt = clienteService.listarClientePorId(id);
+    @GetMapping("/id/{idCliente}")
+    public ResponseEntity<?> listarClientePorId(@PathVariable Long idCliente) {
+            Optional<ClienteResponseDTO> clienteOpt = clienteService.listarClientePorId(idCliente);
             if (clienteOpt.isPresent()) {
                 return ResponseEntity.ok(clienteOpt.get());
             } else {
+                //ErrorResponse errorResponse = new ErrorResponse("No se ha encontrado cliente con este id", HttpStatus.NOT_FOUND.value());
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se ha encontrado cliente con este id");
             }
     }
 
     @GetMapping("/email/{email}")
     public ResponseEntity<?> listarClientePorEmail(@PathVariable String email) {
-        Optional<Cliente> clienteOpt = clienteService.listarClientePorEmail(email);
+        Optional<ClienteResponseDTO> clienteOpt = clienteService.listarClientePorEmail(email);
         if (clienteOpt.isPresent()) {
             return ResponseEntity.ok(clienteOpt.get());
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se ha encontrado cliente con este email");
+            //ErrorResponse errorResponse = new ErrorResponse("No se ha econtrado cliente con este id", HttpStatus.NOT_FOUND.value());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se ha econtrado cliente con este email");
         }
     }
 
     @GetMapping("/nombre/{nombre}")
     public ResponseEntity<?> listarClientePorNombre(@PathVariable String nombre) {
-        List<Cliente> clientes = clienteService.listarClientePorNombre(nombre);
+        List<ClienteResponseDTO> clientes = clienteService.listarClientePorNombre(nombre);
         if (clientes.isEmpty()) {
+            //ErrorResponse errorResponse = new ErrorResponse("No se ha encontrado clientes con este nombre", HttpStatus.NOT_FOUND.value());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se ha encontrado clientes con este nombre");
         } else {
             return ResponseEntity.ok(clientes);

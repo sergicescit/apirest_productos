@@ -22,19 +22,10 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable()) // Desabilita csfr dando acceso a Postman y Front
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.PUT, "/usuarios/**").permitAll()
-                        .requestMatchers("/usuarios/**").permitAll() // damos acceso a las rutas
-                        .requestMatchers(HttpMethod.PUT, "/productos/**").permitAll()
-                        .requestMatchers("/productos/**").permitAll() // damos acceso a las rutas
-                        .requestMatchers(HttpMethod.PUT, "/pedidos/**").permitAll()
-                        .requestMatchers("/pedidos/**").permitAll() // damos acceso a las rutas
-                        .requestMatchers(HttpMethod.PUT, "/clientes/**").permitAll()
-                        .requestMatchers("/clientes/**").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/pedido_productos/**").permitAll()
-                        .requestMatchers("/pedido_productos/**").permitAll() 
-                        .anyRequest().authenticated() // Protege las demás rutas
-
-                );
+                    .requestMatchers(HttpMethod.PUT, "/usuarios/**", "/productos/**", "/pedidos/**", "/clientes/**", "/pedido-producto/**").permitAll() 
+                    .requestMatchers("/usuarios/**", "/productos/**", "/pedidos/**", "/clientes/**", "/pedido-producto/**").permitAll() 
+                    .anyRequest().authenticated() // Protegemos las demás rutas
+            );
 
         return http.build();
     }
