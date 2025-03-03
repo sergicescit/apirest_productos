@@ -15,30 +15,41 @@ import com.fullstack1.backend.models.PedidoProducto;
 @Repository
 public interface IPedidoProductoRepository extends JpaRepository<PedidoProducto, Long> {
 
-    boolean existsByIdPedidoProducto(Long idPedidoProducto);
+        boolean existsByPedido_IdPedidoAndProducto_IdProducto(Long idPedido, Long idProducto);
 
-    Optional<PedidoProducto> findByIdPedidoProducto(Long idPedidoProducto);
+        boolean existsByIdPedidoProducto(Long idPedidoProducto);
 
-    Optional<PedidoProducto> findByPedido_IdPedidoAndProducto_IdProducto(Long idPedido, Long idProducto);
+        Optional<PedidoProducto> findByIdPedidoProducto(Long idPedidoProducto);
 
-    List<PedidoProducto> findByPedido_IdPedido(Long idPedido);
+        @Query("SELECT pp FROM PedidoProducto pp WHERE pp.pedido.idPedido = :idPedido AND pp.producto.idProducto = :idProducto")
+        Optional<PedidoProducto> findByPedido_IdPedidoAndProducto_IdProducto(
+                        @Param("idPedido") Long idPedido,
+                        @Param("idProducto") Long idProducto);
 
-    List<PedidoProducto> findByProducto_IdProducto(Long idProducto);
+        List<PedidoProducto> findByPedido_IdPedido(Long idPedido);
 
-    List<PedidoProducto> findByPedido_Cliente_IdCliente(Long idCliente);
+        List<PedidoProducto> findByProducto_IdProducto(Long idProducto);
 
-    @Query("SELECT pp FROM PedidoProducto pp WHERE pp.cantidad >= :cantidad")
-    List<PedidoProducto> findByCantidadIgualMayor(@Param("cantidad") Integer cantidad);
+        List<PedidoProducto> findByPedido_Cliente_IdCliente(Long idCliente);
 
-    List<PedidoProducto> findByPedido_FechaBetween(LocalDateTime fechaInicio, LocalDateTime fechaFin);
+        @Query("SELECT pp FROM PedidoProducto pp WHERE pp.cantidad BETWEEN :cantidadMin AND :cantidadMax")
+        List<PedidoProducto> findByCantidadEntre(@Param("cantidadMin") Integer cantidadMin,
+                        @Param("cantidadMax") Integer cantidadMax);
 
-    @Query("SELECT pp FROM PedidoProducto pp " +
-            "JOIN pp.pedido p " +
-            "JOIN pp.producto pr " +
-            "WHERE p.cliente = :idCliente " +
-            "AND pr.precio BETWEEN :precioMin AND :precioMax")
-    List<PedidoProducto> findByPedido_Cliente_IdCliente_Producto_PrecioEnRango(
-            @Param("idCliente") Long idCliente,
-            @Param("precioMin") BigDecimal precioMin,
-            @Param("precioMax") BigDecimal precioMax);
+        @Query("SELECT pp FROM PedidoProducto pp " +
+        "JOIN pp.pedido p " +
+        "WHERE p.fecha BETWEEN :fechaInicio AND :fechaFin")
+        List<PedidoProducto> findByPedido_Fecha(
+        @Param("fechaInicio") LocalDateTime fechaInicio,
+        @Param("fechaFin") LocalDateTime fechaFin);
+
+        @Query("SELECT pp FROM PedidoProducto pp " +
+                        "JOIN pp.pedido p " +
+                        "JOIN pp.producto pr " +
+                        "WHERE p.cliente = :idCliente " +
+                        "AND pr.precio BETWEEN :precioMin AND :precioMax")
+        List<PedidoProducto> findByPedido_Cliente_IdCliente_Producto_PrecioEnRango(
+                        @Param("idCliente") Long idCliente,
+                        @Param("precioMin") BigDecimal precioMin,
+                        @Param("precioMax") BigDecimal precioMax);
 }

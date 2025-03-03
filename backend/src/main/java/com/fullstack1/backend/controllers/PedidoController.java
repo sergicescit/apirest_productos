@@ -1,6 +1,6 @@
 package com.fullstack1.backend.controllers;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -17,53 +17,54 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fullstack1.backend.models.Pedido;
+import com.fullstack1.backend.dto.PedidoRequestDTO;
+import com.fullstack1.backend.dto.PedidoResponseDTO;
 import com.fullstack1.backend.services.PedidoService;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/Pedidos")
+@RequestMapping("/pedidos")
 public class PedidoController {
 
     private final PedidoService pedidoService;
 
      @PostMapping("/crear")
-     public ResponseEntity<?> crearPedido (@RequestBody Pedido pedido) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(pedidoService.crearPedido(pedido));
+     public ResponseEntity<?> crearPedido (@RequestBody PedidoRequestDTO pedidoDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(pedidoService.crearPedido(pedidoDTO));
      }
 
      @DeleteMapping("/eliminar/{id}")
      @ResponseStatus(HttpStatus.NO_CONTENT)
-     public void eliminarPedido (@PathVariable Long idPedido) {
+     public void eliminarPedido (@PathVariable("id") Long idPedido) {
         pedidoService.eliminarPedido(idPedido);
      }
 
      @PutMapping("/actualizar/{id}")
-     public ResponseEntity<?> actualizarPedido (@PathVariable Long idPedido, @RequestBody Pedido pedido) {
-        return ResponseEntity.ok(pedidoService.actualizarPedido(idPedido, pedido));
+     public ResponseEntity<?> actualizarPedido (@PathVariable("id") Long idPedido, @RequestBody PedidoRequestDTO pedidoDTO) {
+        return ResponseEntity.ok(pedidoService.actualizarPedido(idPedido, pedidoDTO));
      }
 
      @GetMapping("/listar")
-     public List<Pedido> listarPedido() {
+     public List<PedidoResponseDTO> listarPedido() {
         return pedidoService.listarPedido();
      }
 
      @GetMapping("/id/{id}")
-     public ResponseEntity<?> listarPedidoPorId (@PathVariable Long idPedido) {
+     public ResponseEntity<?> listarPedidoPorId (@PathVariable("id") Long idPedido) {
         return ResponseEntity.ok(pedidoService.listarPedidoPorId(idPedido));
      }
 
      @GetMapping("/pedido-cliente/{id}")
-     public ResponseEntity<?> listarPedidoPorIdCliente(@PathVariable Long idCliente) {
+     public ResponseEntity<?> listarPedidoPorIdCliente(@PathVariable("id") Long idCliente) {
         return ResponseEntity.ok(pedidoService.listarPedidoPorIdCliente(idCliente));
      }
 
      @GetMapping("/fecha")
-     public List<Pedido> listarPedidoPorFecha (@RequestParam("fecha") 
-                                @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) 
-                                LocalDateTime fecha){
+     public List<PedidoResponseDTO> listarPedidoPorFecha (@RequestParam("fecha") 
+                                @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) 
+                                LocalDate fecha){
         return pedidoService.listarPedidoPorFecha(fecha);
     }
 }
