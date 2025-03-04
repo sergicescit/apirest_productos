@@ -158,9 +158,6 @@ public class PedidoProductoService {
         LocalDateTime fechaFinDateTime = (fechaFin != null) ? fechaFin.atTime(23, 59, 59).withNano(0)
                 : LocalDateTime.now().withHour(23).withMinute(59).withSecond(59);
 
-        System.out.println("FECHA INICIO DATE TIME = " + fechaInicioDateTime);
-        System.out.println("FECHA FIN DATE TIME = " + fechaFinDateTime);
-
         return pedidoProductoRepo.findByPedido_Fecha(fechaInicioDateTime, fechaFinDateTime)
                 .stream()
                 .map(PedidoProductoResponseDTO::new)
@@ -168,8 +165,7 @@ public class PedidoProductoService {
     }
 
     public List<PedidoProductoResponseDTO> listarPorIdClienteYPrecioEnRango(
-            Long idCliente, Long idProducto,
-            BigDecimal precioMin, BigDecimal precioMax) {
+            Long idCliente, BigDecimal precioMin, BigDecimal precioMax) {
         return pedidoProductoRepo.findByPedido_Cliente_IdCliente_Producto_PrecioEnRango(idCliente, precioMin,
                 precioMax).stream()
                 .map(PedidoProductoResponseDTO::new)

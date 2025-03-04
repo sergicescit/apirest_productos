@@ -1,5 +1,6 @@
 package com.fullstack1.backend.controllers;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -118,6 +119,19 @@ public class PedidoProductoController {
         
         if (pedidoProducto.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se ha encontrado pedido producto con esas fechas");
+        } else {
+            return ResponseEntity.ok(pedidoProducto);
+        }
+    }
+
+    @GetMapping("/cliente-precio/{idCliente}")
+    public ResponseEntity<?> listarPorClientePrecioEnRango( @PathVariable ("idCliente") Long idCliente,
+                                                            @RequestParam (required = false) BigDecimal precioMin,
+                                                            @RequestParam (required = false) BigDecimal precioMax) {
+        List<PedidoProductoResponseDTO> pedidoProducto = pedidoProductoService.listarPorIdClienteYPrecioEnRango(idCliente, precioMin, precioMax);
+
+        if (pedidoProducto.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se ha encontrado ningún pedido producto con estos datos");
         } else {
             return ResponseEntity.ok(pedidoProducto);
         }

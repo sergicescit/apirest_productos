@@ -37,16 +37,16 @@ public interface IPedidoProductoRepository extends JpaRepository<PedidoProducto,
                         @Param("cantidadMax") Integer cantidadMax);
 
         @Query("SELECT pp FROM PedidoProducto pp " +
-        "JOIN pp.pedido p " +
-        "WHERE p.fecha BETWEEN :fechaInicio AND :fechaFin")
+                        "JOIN pp.pedido p " +
+                        "WHERE p.fecha BETWEEN :fechaInicio AND :fechaFin")
         List<PedidoProducto> findByPedido_Fecha(
-        @Param("fechaInicio") LocalDateTime fechaInicio,
-        @Param("fechaFin") LocalDateTime fechaFin);
+                        @Param("fechaInicio") LocalDateTime fechaInicio,
+                        @Param("fechaFin") LocalDateTime fechaFin);
 
         @Query("SELECT pp FROM PedidoProducto pp " +
                         "JOIN pp.pedido p " +
                         "JOIN pp.producto pr " +
-                        "WHERE p.cliente = :idCliente " +
+                        "WHERE p.cliente.idCliente = :idCliente " +
                         "AND pr.precio BETWEEN :precioMin AND :precioMax")
         List<PedidoProducto> findByPedido_Cliente_IdCliente_Producto_PrecioEnRango(
                         @Param("idCliente") Long idCliente,
